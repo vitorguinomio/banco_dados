@@ -10,7 +10,7 @@ def conector_banco():
     )
 def inserir_dados():
     conn = conector_banco()
-    cursor = conn.cursor()  inserir no banco
+    cursor = conn.cursor()  #inserir no banco
 
 print("\n FAZER NOVO REGISTRO")
 print("-"*50)
