@@ -1,0 +1,22 @@
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade)
+VALUES ('Vitor', 'Sousa', '2009-09-13', 'M', 79.5, 1.80, 'Africano');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Ana', 'Silva', '1985-03-15', 'F', 65.2, 1.68, 'Brasileira');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Bruno', 'Ferreira', '1992-11-20', 'M', 80.0, 1.78, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Carla', 'Santos', '1978-07-01', 'F', 70.5, 1.70, 'Portuguesa');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Daniel', 'Oliveira', '2001-01-25', 'M', 75.8, 1.85, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Eduarda', 'Lima', '1995-09-10', 'F', 60.1, 1.65, 'Argentina');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Fernando', 'Costa', '1980-04-05', 'M', 88.3, 1.90, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Gabriela', 'Martins', '1998-12-30', 'F', 58.9, 1.60, 'Espanhola');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Hugo', 'Rodrigues', '1970-06-18', 'M', 92.7, 1.75, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Isabela', 'Almeida', '2005-02-14', 'F', 55.0, 1.58, 'Brasileira');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('João', 'Pereira', '1989-08-08', 'M', 77.1, 1.82, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Karen', 'Gomes', '1975-10-22', 'F', 68.0, 1.72, 'Italiana');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Luiz', 'Nunes', '1993-05-19', 'M', 85.5, 1.88, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Mariana', 'Souza', '1982-01-03', 'F', 72.3, 1.73, 'Brasileira');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Nelson', 'Cunha', '1965-09-29', 'M', 95.0, 1.79, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Olivia', 'Castro', '2000-04-12', 'F', 63.7, 1.67, 'Francesa');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Pedro', 'Ribeiro', '1990-07-07', 'M', 79.9, 1.81, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Quiteria', 'Dias', '1972-11-04', 'F', 71.0, 1.69, 'Brasileira');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Rafael', 'Fernandes', '1987-02-28', 'M', 83.2, 1.84, 'Brasileiro');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Sofia', 'Machado', '1996-06-23', 'F', 61.5, 1.66, 'Americana');
+INSERT INTO paciente (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade) VALUES ('Thiago', 'Guedes', '1983-03-09', 'M', 86.0, 1.86, 'Brasileiro');

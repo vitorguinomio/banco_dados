@@ -1,60 +1,61 @@
 import mysql.connector
 from datetime import datetime
 
-def calcular_idade(data_nasc):
-    hoje = datetime.now()
-    return hoje.year - data_nasc.year - ((hoje.month, hoje.day) < (data_nasc.month, data_nasc.day))
-
-def calcular_imc(peso, altura):
-    return peso / (altura ** 2)
-
-try:
-    id_desejado = int(input("Digite o ID da pessoa: "))
-
-    conn = mysql.connector.connect(
+def conector_banco():
+    return mysql.connector.connect(
         host="localhost",
-        database="mytext",
-        user="root",
-        password="******"
+        database="pysql",
+        user='Vitor',
+        password="133122"  # Corrigido aqui
     )
 
-    cursor = conn.cursor()
-    cursor.execute("SELECT nome, nasc, peso, altura FROM nome_da_tabela WHERE id = %s", (id_desejado,))
-    pessoa = cursor.fetchone()
+def inserir_dados():
+    print("\n FAZER NOVO REGISTRO")
+    print("-" * 50)
 
-    if pessoa:
-        nome, nasc, peso, altura = pessoa
-        idade = calcular_idade(nasc)
-        imc = calcular_imc(peso, altura)
+    try:
+        conn = conector_banco()
+        cursor = conn.cursor()
 
-        print("\nRELATÓRIO DE SAÚDE")
-        print("=" * 50)
-        print(f"\nNome: {nome}")
-        print(f"Idade: {idade} anos")
-        print(f"Peso: {peso} kg | Altura: {altura} m")
-        print(f"IMC: {imc:.2f} - ", end="")
+        nome = input('Nome: ')
+        sobrenome = input("Sobrenome: ")
+        nasc_input = input("Data de nascimento (YYYY-MM-DD): ")
+        nasc = datetime.strptime(nasc_input, "%Y-%m-%d").date()
+        sexo = input("Sexo (M/F): ").upper()
+        peso = float(input("Peso (kg): "))
+        altura = float(input("Altura (m): "))
+        nacionalidade = input("Onde você nasceu: ") or "Brasil"
 
-        if imc < 18.5:
-            print("Abaixo do peso")
-        elif 18.5 <= imc < 25:
-            print("Peso normal")
-        elif 25 <= imc < 30:
-            print("Sobrepeso")
-        else:
-            print("Obesidade")
-        print("\n" + "=" * 50)
-    else:
-        print(f"Nenhuma pessoa encontrada com o ID {id_desejado}")
+        if sexo not in ["M", "F"]:
+            raise ValueError("Sexo deve ser M ou F")
+        if peso <= 20 or altura <= 0:
+            raise ValueError("Peso e altura devem ser positivos")
 
-except mysql.connector.Error as err:
-    print(f"Erro de conexão: {err}")
+        sql = """INSERT INTO nome_da_tabela 
+        (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        valores = (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade)
 
-except ValueError:
-    print("ID inválido. Por favor, digite um número inteiro.")
+        cursor.execute(sql, valores)
+        conn.commit()
+        print("Registro inserido com sucesso")
 
-finally:
-    if 'conn' in locals() and conn.is_connected():
-        cursor.close()
-        conn.close()
-        print("Conexão encerrada")
+    except ValueError as ve:
+        print(f"\n ;) \n Erro na validação: {ve}")
+    except mysql.connector.Error as err:
+        print(f"\n :( \n Erro no banco de dados: {err}")
+        if 'conn' in locals():
+            conn.rollback()
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
 
+if __name__ == "__main__":
+    while True:
+        inserir_dados()
+        continuar = input("\nInserir outro registro? (S/N): ").upper()
+        if continuar != "S":
+            break

@@ -4,9 +4,9 @@ from datetime import datetime
 def conector_banco():
     return mysql.connector.connect(
         host="localhost",
-        database="mytext",
-        user='root',
-        password="*******" # selecionar o banco
+        database="pysql",
+        user='Vitor',
+        passorwd="133122"
     )
 def inserir_dados():
     conn = conector_banco()
