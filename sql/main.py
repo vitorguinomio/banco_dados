@@ -1,4 +1,4 @@
-import mysql.connector
+import psycopg2
 from datetime import datetime
 
 def calcular_idade(data_nasc):
@@ -11,12 +11,13 @@ def calcular_imc(peso, altura):
 try:
     id_desejado = int(input("Digite o ID da pessoa: "))
 
-    conn = mysql.connector.connect(
+    conn = psycopg2.connect(
         host="localhost",
         database="pysql",
         user="Vitor",
         password="133122"
-    )
+)
+
 
     cursor = conn.cursor()
     cursor.execute("SELECT nome, nasc, peso, altura FROM nome_da_tabela WHERE id = %s", (id_desejado,))

@@ -1,13 +1,12 @@
-import mysql.connector
+import psycopg2
 from datetime import datetime
 
-def conector_banco():
-    return mysql.connector.connect(
-        host="localhost",
-        database="pysql",
-        user='Vitor',
-        password="133122"
-    )
+conn = psycopg2.connect(
+    host="localhost",
+    database="pysql",
+    user="Vitor",
+    password="133122"
+)
 
 def inserir_dados():
     print("\n FAZER NOVO REGISTRO")
