@@ -16,11 +16,10 @@ try:
         database="pysql",
         user="Vitor",
         password="133122"
-)
-
+    )
 
     cursor = conn.cursor()
-    cursor.execute("SELECT nome, nasc, peso, altura FROM nome_da_tabela WHERE id = %s", (id_desejado,))
+    cursor.execute("SELECT nome, nasc, peso, altura FROM paciente WHERE id = %s", (id_desejado,))
     pessoa = cursor.fetchone()
 
     if pessoa:
@@ -47,14 +46,17 @@ try:
     else:
         print(f"Nenhuma pessoa encontrada com o ID {id_desejado}")
 
-except mysql.connector.Error as err:
-    print(f"Erro de conexão: {err}")
+except psycopg2.Error as err:
+    print(f"Erro de conexão ou consulta: {err}")
 
 except ValueError:
     print("ID inválido. Por favor, digite um número inteiro.")
 
 finally:
-    if 'conn' in locals() and conn.is_connected():
-        cursor.close()
-        conn.close()
-        print("Conexão encerrada")
+    try:
+        if conn:
+            cursor.close()
+            conn.close()
+            print("Conexão encerrada.")
+    except NameError:
+        pass

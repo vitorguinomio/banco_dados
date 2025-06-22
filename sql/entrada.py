@@ -1,15 +1,16 @@
 import psycopg2
 from datetime import datetime
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="pysql",
-    user="Vitor",
-    password="133122"
-)
+def conector_banco():
+    return psycopg2.connect(
+        host="localhost",
+        database="pysql",
+        user="Vitor",
+        password="133122"
+    )
 
 def inserir_dados():
-    print("\n FAZER NOVO REGISTRO")
+    print("\nFAZER NOVO REGISTRO")
     print("-" * 50)
 
     try:
@@ -30,7 +31,8 @@ def inserir_dados():
         if peso <= 20 or altura <= 0:
             raise ValueError("Peso e altura devem ser positivos")
 
-        sql = """INSERT INTO nome_da_tabela 
+        sql = """
+        INSERT INTO paciente 
         (nome, sobrenome, nasc, sexo, peso, altura, nacionalidade)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
@@ -41,15 +43,15 @@ def inserir_dados():
         print("Registro inserido com sucesso")
 
     except ValueError as ve:
-        print(f"\n ;) \n deu erro na validação: {ve}")
-    except mysql.connector.Error as err:
-        print(f"\n ;) \n deu erro no banco de dados: {err}")
+        print(f"\nErro na validação: {ve}")
+    except psycopg2.Error as err:
+        print(f"\nErro no banco de dados: {err}")
         if 'conn' in locals():
             conn.rollback()
     finally:
         if 'cursor' in locals():
             cursor.close()
-        if 'conn' in locals() and conn.is_connected():
+        if 'conn' in locals():
             conn.close()
 
 if __name__ == "__main__":
