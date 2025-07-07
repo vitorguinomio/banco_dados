@@ -1,12 +1,12 @@
 -- Active: 1750340161485@@127.0.0.1@5432@postgres
 
-CREATE DATABASE nome_do_banco
+/*CREATE DATABASE nome_do_banco
 WITH 
     OWNER = nome_do_dono
     ENCODING = 'UTF8'
     LC_COLLATE = 'pt_BR.UTF-8'
     LC_CTYPE = 'pt_BR.UTF-8'
-    TEMPLATE = template0;
+    TEMPLATE = template0; */
 
 
 CREATE TABLE paciente (

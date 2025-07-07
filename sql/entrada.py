@@ -3,9 +3,9 @@ from datetime import datetime
 
 def conector_banco():
     return psycopg2.connect(
-        host="localhost",
-        database="pysql",
-        user="Vitor",
+        host="192.168.1.100",
+        database="peso",
+        user="vitor",
         password="133122"
     )
 

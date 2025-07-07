@@ -13,8 +13,8 @@ try:
 
     conn = psycopg2.connect(
         host="localhost",
-        database="pysql",
-        user="Vitor",
+        database="peso",
+        user="vitor",
         password="133122"
     )
 
