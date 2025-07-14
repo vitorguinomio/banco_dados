@@ -1,15 +1,19 @@
-
 FROM python:3.9-slim
-
 
 WORKDIR /app
 
-# Atualiza pip e instala dependências
-RUN pip install --upgrade pip \
- && pip install virtualenv ipython jupyterlab pandas
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc postgresql postgresql-contrib \
+ && pip install --upgrade pip \
+ && pip install virtualenv ipython jupyterlab pandas psycopg2-binary \
+ && apt-get remove -y gcc \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-# Expõe a porta do Jupyter Lab
 EXPOSE 8888
+EXPOSE 5432  
 
-# Comando para iniciar o Jupyter Lab
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD service postgresql start && \
+    jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+
+
