@@ -1,0 +1,2 @@
+-- Active: 1751900289641@@127.0.0.1@5432@reservadb
+SELECT * FROM turma LIMIT 300;
