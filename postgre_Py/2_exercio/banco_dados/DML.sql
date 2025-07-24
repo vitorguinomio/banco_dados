@@ -80,21 +80,21 @@ UPDATE turma SET idcurso = 13 WHERE codturma ILIKE('SIN%');
 
 -- simulação de reserva 
 --tabela reserva
-INSERT INTO reserva (matriculauser, idcurso, codturma, datainicial, datafinal)
+INSERT INTO reserva (matriculauser, codturma, datainicial, datafinal)
 VALUES 
-(94147, 1 ,'ADM02N1', '2025-08-11', '2025-11-30')
+(94147, 'ADS02N1', '2025-08-11', '2025-11-30')
 RETURNING idreserva;
 
 --tabela reserva sala 
 INSERT INTO reservasala (idreserva, idsala, turno, responsavel)
-VALUES (1, 1, 'Manhã', 'BigBoss') -- turno informado para consistência, mesmo sem períodos
+VALUES (2, 2, 'Noite', 'VICELENO') -- turno informado para consistência, mesmo sem períodos
 RETURNING idreservasala;
 
 --tabela periodo
-INSERT INTO periodo (idreservasala, terceiro , quarto)
-VALUES (1, TRUE, TRUE)
+INSERT INTO periodo (idreservasala, segundo, quarto)
+VALUES (2, TRUE, TRUE)
 RETURNING idperiodo;
 
 --tabela diasemana
 INSERT INTO diasemana (idreservasala, idperiodo, segunda, terca)
-VALUES (1, 1, TRUE, TRUE);
+VALUES (2, 1, TRUE, TRUE);
