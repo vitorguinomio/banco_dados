@@ -17,7 +17,6 @@ BEGIN
         RETURN NEW;
 END;
 $$ LANGUAGE PLPGSQL;
-
 -- trigger para idbloco
 CREATE TRIGGER trigger_idbloco
 BEFORE INSERT ON sala
@@ -26,7 +25,7 @@ EXECUTE FUNCTION set_idbloco_from_nomebloco();
 
 
 
-
+-- Procura idcurso somente com o codigo turma e nao ter que inserir manuelmente
 CREATE OR REPLACE FUNCTION idcurso_from_reserva()
 RETURNS TRIGGER AS
 $$
@@ -43,17 +42,11 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
-
+-- trigger que vai usar a function de idcurso
 CREATE TRIGGER trigger_idcurso
 BEFORE INSERT ON reserva
 FOR EACH ROW 
 EXECUTE FUNCTION idcurso_from_reserva();
-
-
-
-
-
 
 
 
@@ -72,8 +65,7 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
--- Criando a trigger
+-- Criando a trigger para garantir que a sala sendo reservada esta ativa.
 CREATE TRIGGER trigger_validate_idsala
 BEFORE INSERT ON reservasala
 FOR EACH ROW
