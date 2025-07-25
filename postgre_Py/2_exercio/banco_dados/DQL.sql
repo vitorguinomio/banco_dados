@@ -3,7 +3,7 @@ SELECT * FROM turma LIMIT 300;
 
 SELECT * FROM sala;
 
-
+SELECT * FROM usuario;
 
 SELECT
     r.datainicial,
