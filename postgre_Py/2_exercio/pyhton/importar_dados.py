@@ -10,7 +10,7 @@ caminho_arq_excel = r'/home/guinomio/banco_dados/postgre/2_exercio/pyhton/doc_tu
 
 # Conectar ao banco de dados PostgreSQL
 user = 'vitor'
-password = '133122'
+password = '133122' 
 host = 'localhost'
 database = 'reservadb'
 engine = create_engine(f'postgresql+psycopg2://{user}:{password}@{host}/{database}')
