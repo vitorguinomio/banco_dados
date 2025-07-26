@@ -1,4 +1,4 @@
--- Active: 1751900289641@@127.0.0.1@5432@reservadb
+-- Active: 1753466657049@@127.0.0.1@5432@peso
 
 -- Automatizando o adcionar idbloco na tabela sala
 CREATE OR REPLACE FUNCTION set_idbloco_from_nomebloco()

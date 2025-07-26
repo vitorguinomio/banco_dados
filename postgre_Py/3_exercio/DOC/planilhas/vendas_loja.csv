@@ -1,0 +1,13 @@
+data,produto,categoria,quantidade,preco_unitario,loja
+2024-01-31,Notebook,Eletrônicos,5,3500,Loja A
+2024-02-29,Mouse,Eletrônicos,20,100,Loja B
+2024-03-31,Teclado,Eletrônicos,15,150,Loja A
+2024-04-30,Monitor,Eletrônicos,10,800,Loja C
+2024-05-31,Headset,Eletrônicos,8,250,Loja A
+2024-06-30,Mousepad,Eletrônicos,25,40,Loja B
+2024-07-31,Notebook,Eletrônicos,3,3600,Loja C
+2024-08-31,Monitor,Eletrônicos,6,850,Loja A
+2024-09-30,Teclado,Eletrônicos,14,160,Loja B
+2024-10-31,Mouse,Eletrônicos,18,95,Loja C
+2024-11-30,Headset,Eletrônicos,10,260,Loja A
+2024-12-31,Notebook,Eletrônicos,4,3700,Loja B
