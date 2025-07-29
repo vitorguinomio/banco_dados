@@ -191,6 +191,11 @@ def cadastra_sala():
                 datashow,
                 matriculauser
             ))
+
+            idsala = cur.fetchone()[0]
+            conn.commit()
+
+
         except ValueError as ve:
             print(f"Erro de entrada: {ve}")
         except Error as e:
@@ -202,14 +207,44 @@ def cadastra_sala():
             cur.close()
         if conn:
             conn.close()
+
+def ver_sala():
+    """ Funcao para cadastro da sala"""
+    try:
+        conn, cur = conectar_banco()
+        if not conn or not cur:
+            return
+        
+        cur.execute("SELECT * FROM sala;")
+        salas = cur.fetchall()
+        
+        if not salas:
+            print("Nenhuma sala cadastrada.")
+        else:
+            print("\n=== Lista de Salas ===")
+            for sala in salas:
+                print(sala)
+
+    except Error as e:
+        print(f"Erro ao buscar salas: {e}")
+    
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
 if __name__ == "__main__":
     print("1 - Fazer Reserva")
     print("2 - Cadastrar Sala")
-    opcao = input("Escolha uma opção (1-2): ").strip()
+    print("3 - Ver salas existentes")
+    opcao = input("Escolha uma opção (1-3): ").strip()
 
     if opcao == '1':
         inserir_reserva()
     elif opcao == '2':
         cadastra_sala()
+    elif opcao == '3':
+        ver_sala()
     else:
         print("Nao existe essa opcao")

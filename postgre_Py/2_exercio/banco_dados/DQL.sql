@@ -5,6 +5,8 @@ SELECT * FROM sala;
 
 SELECT * FROM usuario;
 
+SELECT * FROM bloco;
+
 SELECT
     r.datainicial,
     r.datafinal,
