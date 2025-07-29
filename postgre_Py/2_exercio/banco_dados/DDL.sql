@@ -39,6 +39,7 @@ CREATE TABLE sala(
     idsala INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     idbloco INTEGER NOT NULL,
     matriculauser INTEGER NULL,
+    andar VARCHAR(20),
     nomebloco CHAR(1) NOT NULL, -- VAMOS PERMITIR NULLABLE
     numerosala INTEGER NOT NULL,    
     capacidade INTEGER NOT NULL,
