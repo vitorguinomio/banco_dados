@@ -1,4 +1,4 @@
--- Active: 1750340161485@@127.0.0.1@5432@postgres
+-- Active: 1751900289641@@127.0.0.1@5432@peso
 
 /*CREATE DATABASE nome_do_banco
 WITH 
@@ -18,4 +18,23 @@ CREATE TABLE paciente (
     peso DECIMAL(5,2),
     altura DECIMAL(3,2),
     nacionalidade VARCHAR(50) DEFAULT 'Brasileiro'
+);
+
+CREATE TABLE habito (
+    id SERIAL PRIMARY KEY,
+    id_paciente INTEGER REFERENCES paciente(id),
+    fumante BOOLEAN,
+    etilista BOOLEAN,
+    pratica_atividade BOOLEAN,
+    sono_media_horas NUMERIC(3,1),
+    atualizacao DATE DEFAULT CURRENT_DATE
+);
+
+
+CREATE TABLE pressao_glicose (
+    id SERIAL PRIMARY KEY,
+    id_paciente INTEGER REFERENCES paciente(id),
+    data_registro DATE DEFAULT CURRENT_DATE,
+    pressao_sistolica INT,
+    glicose_mg_dl DECIMAL(5,2)
 );
