@@ -1,4 +1,4 @@
--- Active: 1753466657049@@127.0.0.1@5432@peso
+-- Active: 1751900289641@@127.0.0.1@5432@reservadb
 
 -- Automatizando o adcionar idbloco na tabela sala
 CREATE OR REPLACE FUNCTION set_idbloco_from_nomebloco()
@@ -74,3 +74,48 @@ EXECUTE FUNCTION validate_idsala();
 
 
 
+--Visualizar reservas
+    WITH dias_marcados AS (
+        SELECT idreservasala, 'segunda' AS dia FROM diasemana WHERE segunda = TRUE
+        UNION
+        SELECT idreservasala, 'terca' FROM diasemana WHERE terca = TRUE
+        UNION
+        SELECT idreservasala, 'quarta' FROM diasemana WHERE quarta = TRUE
+        UNION
+        SELECT idreservasala, 'quinta' FROM diasemana WHERE quinta = TRUE
+        UNION
+        SELECT idreservasala, 'sexta' FROM diasemana WHERE sexta = TRUE
+        UNION
+        SELECT idreservasala, 'sabado' FROM diasemana WHERE sabado = TRUE
+        UNION
+        SELECT idreservasala, 'domingo' FROM diasemana WHERE domingo = TRUE
+    ),
+    periodos_marcados AS (
+        SELECT idreservasala, 'primeiro' AS periodo FROM periodo WHERE primeiro = TRUE
+        UNION
+        SELECT idreservasala, 'segundo' FROM periodo WHERE segundo = TRUE
+        UNION
+        SELECT idreservasala, 'terceiro' FROM periodo WHERE terceiro = TRUE
+        UNION
+        SELECT idreservasala, 'quarto' FROM periodo WHERE quarto = TRUE
+        UNION
+        SELECT idreservasala, 'integral' FROM periodo WHERE integral = TRUE
+    ),
+    dias_agrupados AS (
+        SELECT dm.idreservasala, STRING_AGG(dm.dia, ', ' ORDER BY dm.dia) AS dias
+        FROM dias_marcados dm
+        GROUP BY dm.idreservasala
+    ),
+    periodos_agrupados AS (
+        SELECT pm.idreservasala, STRING_AGG(pm.periodo, ', ' ORDER BY pm.periodo) AS periodos
+        FROM periodos_marcados pm
+        GROUP BY pm.idreservasala
+    )
+    SELECT
+        d.idreservasala, -- Qualificando explicitamente idreservasala com o alias 'd'
+        d.dias,
+        p.periodos,
+        r.responsavel
+    FROM dias_agrupados d 
+    LEFT JOIN periodos_agrupados p ON d.idreservasala = p.idreservasala
+    LEFT JOIN reservasala r ON d.idreservasala = r.idreservasala;

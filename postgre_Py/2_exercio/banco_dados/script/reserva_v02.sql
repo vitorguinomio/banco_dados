@@ -48,7 +48,7 @@ BEGIN
         SELECT idsala INTO v_idsala
         FROM sala
         WHERE nomebloco = p_nomebloco -- compara nomebloco para verificar e o bloco certo (principalmente que numero sala pode se repetir mais em blocos diferentes).
-        AND numerosala = p_numerosala; --compara numerosala para achar ela
+        AND numerosala = p_numerosala --compara numerosala para achar ela
         AND statusdelete = FALSE --verificar se a sala ta disponivel.
         AND ativo = TRUE;
     --confirma se a sala foi encontrada
