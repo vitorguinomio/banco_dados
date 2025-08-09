@@ -1,15 +1,18 @@
 import psycopg2
 from datetime import datetime
 
-def calcular_idade(data_nasc):
+def calcular_idade(nasc):
+    if nasc is None:
+        return None
     hoje = datetime.now()
-    return hoje.year - data_nasc.year - ((hoje.month, hoje.day) < (data_nasc.month, data_nasc.day))
+    return hoje.year - nasc.year - ((hoje.month, hoje.day) < (nasc.month, nasc.day))
 
 def calcular_imc(peso, altura):
     return peso / (altura ** 2)
 
 try:
-    id_desejado = int(input("Digite o ID da pessoa: "))
+    nome_desejado = input("Digite o nome da pessoa: ").strip()
+    sobrenome_desejado = input("Digite o nome da pessoa desejada: ").strip()
 
     conn = psycopg2.connect(
         host="localhost",
@@ -19,19 +22,21 @@ try:
     )
 
     cursor = conn.cursor()
-    cursor.execute("SELECT nome, nasc, peso, altura FROM paciente WHERE id = %s", (id_desejado,))
+    cursor.execute(
+        "SELECT nome, nasc, peso, altura, sexo FROM paciente WHERE nome = %s AND sobrenome = %s;", (nome_desejado, sobrenome_desejado))
     pessoa = cursor.fetchone()
 
     if pessoa:
-        nome, nasc, peso, altura = pessoa
+        nome, nasc, peso, altura,sexo = pessoa
         idade = calcular_idade(nasc)
-        imc = calcular_imc(peso, altura)
+        imc = calcular_imc(float(peso), float(altura))
 
         print("\nRELATÓRIO DE SAÚDE")
         print("=" * 50)
         print(f"\nNome: {nome}")
         print(f"Idade: {idade} anos")
         print(f"Peso: {peso} kg | Altura: {altura} m")
+        print(f"Sexo:{sexo}")
         print(f"IMC: {imc:.2f} - ", end="")
 
         if imc < 18.5:
@@ -44,7 +49,7 @@ try:
             print("Obesidade")
         print("\n" + "=" * 50)
     else:
-        print(f"Nenhuma pessoa encontrada com o ID {id_desejado}")
+        print(f"Nenhuma pessoa encontrada com o ID {nome_desejado}")
 
 except psycopg2.Error as err:
     print(f"Erro de conexão ou consulta: {err}")
