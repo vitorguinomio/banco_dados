@@ -10,58 +10,92 @@ def calcular_idade(nasc):
 def calcular_imc(peso, altura):
     return peso / (altura ** 2)
 
-try:
-    nome_desejado = input("Digite o nome da pessoa: ").strip()
-    sobrenome_desejado = input("Digite o nome da pessoa desejada: ").strip()
-
-    conn = psycopg2.connect(
+def conector_banco():
+    return psycopg2.connect(
         host="localhost",
         database="peso",
         user="vitor",
         password="133122"
     )
 
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT nome, nasc, peso, altura, sexo FROM paciente WHERE nome = %s AND sobrenome = %s;", (nome_desejado, sobrenome_desejado))
-    pessoa = cursor.fetchone()
+def paciente_imc():
 
-    if pessoa:
-        nome, nasc, peso, altura,sexo = pessoa
-        idade = calcular_idade(nasc)
-        imc = calcular_imc(float(peso), float(altura))
-
-        print("\nRELATÓRIO DE SAÚDE")
-        print("=" * 50)
-        print(f"\nNome: {nome}")
-        print(f"Idade: {idade} anos")
-        print(f"Peso: {peso} kg | Altura: {altura} m")
-        print(f"Sexo:{sexo}")
-        print(f"IMC: {imc:.2f} - ", end="")
-
-        if imc < 18.5:
-            print("Abaixo do peso")
-        elif 18.5 <= imc < 25:
-            print("Peso normal")
-        elif 25 <= imc < 30:
-            print("Sobrepeso")
-        else:
-            print("Obesidade")
-        print("\n" + "=" * 50)
-    else:
-        print(f"Nenhuma pessoa encontrada com o ID {nome_desejado}")
-
-except psycopg2.Error as err:
-    print(f"Erro de conexão ou consulta: {err}")
-
-except ValueError:
-    print("ID inválido. Por favor, digite um número inteiro.")
-
-finally:
     try:
-        if conn:
+        nome_desejado = input("Digite o nome da pessoa: ").strip().upper()
+        sobrenome_desejado = input("Digite o nome da pessoa desejada: ").strip().upper()
+
+        conn = conector_banco()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT nome, nasc, peso, altura, sexo FROM paciente WHERE nome = %s AND sobrenome = %s;", (nome_desejado, sobrenome_desejado))
+        pessoa = cursor.fetchone()
+
+        if pessoa:
+            nome, nasc, peso, altura,sexo = pessoa
+            idade = calcular_idade(nasc)
+            imc = calcular_imc(float(peso), float(altura))
+
+            print("\nRELATÓRIO DE SAÚDE")
+            print("=" * 50)
+            print(f"\nNome: {nome}")
+            print(f"Idade: {idade} anos")
+            print(f"Peso: {peso} kg | Altura: {altura} m")
+            print(f"Sexo:{sexo}")
+            print(f"IMC: {imc:.2f} - ", end="")
+
+            if imc < 18.5:
+                print("Abaixo do peso")
+            elif 18.5 <= imc < 25:
+                print("Peso normal")
+            elif 25 <= imc < 30:
+                print("Sobrepeso")
+            else:
+                print("Obesidade")
+            print("\n" + "=" * 50)
+        else:
+            print(f"Nenhuma pessoa encontrada com o ID {nome_desejado}")
+
+    except psycopg2.Error as err:
+        print(f"Erro de conexão ou consulta: {err}")
+
+    except ValueError:
+        print("ID inválido. Por favor, digite um número inteiro.")
+
+    finally:
+        if 'cursor' in locals():
             cursor.close()
+        if 'conn' in locals():
             conn.close()
-            print("Conexão encerrada.")
-    except NameError:
-        pass
+
+def paciente_pais():
+
+    try:
+        conn = conector_banco()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM paciente;"
+        )
+        quant = cursor.fetchone()
+        print(quant)
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals():
+            conn.close()
+
+if __name__ == "__main__":
+    while True:
+        modo = input("\n[1] Calcular ICM de paciente\n[2] Contagem de paises\nEscolha: ")
+        if modo == "1":
+            paciente_imc()
+        elif modo == "2":
+            paciente_pais()
+        else:
+            print("Opcao invalida")
+        
+        continuar = input("\n pretende continuar? (S/N)").upper()
+        if continuar != "S":
+            break

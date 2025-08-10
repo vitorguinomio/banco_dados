@@ -1,7 +1,8 @@
 import psycopg2
 from datetime import datetime
-from fake import Farker
-fake = Farker("pt_BR")
+from faker import Faker
+fake = Faker("pt_BR")
+import random
 
 def entrada_boobelana(prompt):
     while True:
@@ -71,16 +72,17 @@ def insercao_auto():
         conn = conector_banco()
         cursor = conn.cursor()
 
+        paises_permitidos = ['Brasil','EUA', 'Chile', 'Vaticano', ' Argetina', 'Mexico', 'Japao', 'China', 'Australia', 'Colombia']
         quant = int(input("Quantos registros você quer inserir automaticamente? "))
 
         for _ in range(quant):
-            nome = fake.first_name()
-            sobrenome = fake.last_name()
+            nome = fake.first_name().upper()
+            sobrenome = fake.last_name().upper()
             nasc = fake.date_of_birth(minimum_age=18, maximum_age=90)
-            sexo = fake.random_element(elements=("M", "F"))
+            sexo = fake.random_element(elements=("M", "F")).upper()
             peso = round(fake.random_number(digits=2) + 40, 2)
             altura = round(fake.random_number(digits=1) / 10 + 1.5, 2)
-            nacionalidade = fake.country()
+            nacionalidade = random.choice(paises_permitidos).upper()
 
             sql = """
             INSERT INTO paciente 
