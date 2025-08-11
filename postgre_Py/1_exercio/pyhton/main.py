@@ -3,11 +3,7 @@ from datetime import datetime
 from transformers import pipeline
 import pandas as pd
 
-'''def AI():
-    prompt = f""" Analise os seguintes de IMC médio por país. Explique por que alguns países podem ter IMC mais altos. Considerer fatos da vida real
-    {}
-    """
-'''
+
 def calcular_idade(nasc):
     if nasc is None:
         return None
@@ -21,7 +17,7 @@ def conector_banco():
     return psycopg2.connect(
         host="localhost",
         database="peso",
-        user="postgres",
+        user="vitor",
         password="133122"
     )
 
@@ -94,26 +90,53 @@ def paciente_pais():
             conn.close()
 
 def analise_AI():
-
+    conn = None
+    cursor = None
     try:
-
+        # Conectar ao banco e consultar dados
         conn = conector_banco()
         cursor = conn.cursor()
+        cursor.execute(
+            "SELECT nacionalidade, AVG(peso / (altura * altura)) AS imc_medio, COUNT(*) AS total_pacientes "
+            "FROM paciente GROUP BY nacionalidade;"
+        )
+        df = pd.DataFrame(cursor.fetchall(), columns=['nacionalidade', 'imc_medio', 'total_pacientes'])
 
-        cursor.execute("SELECT nacionalidade, AVG(peso / (altura * altura)) AS imc_medio, COUNT(*) AS total_pacientes FROM paciente GROUP BY nacionalidade;")
-        
-        resultados = cursor.fetchall()
-        colunas = ['nacionalidade', 'imc_medio', 'total_pacientes']
-        df = pd.DataFrame(resultados, columns = colunas)
+        # Análise com IA
+        try:
+            analisador = pipeline("text-generation", model="gpt2")
+            prompt = (
+                "Analise em português os dados de IMC por nacionalidade:\n"
+                f"{df.to_string(index=False)}\n\n"
+                "Liste:\n1. Países com IMC > 25:\n2. Países com IMC ≤ 25:\n3. País com mais pacientes:\n"
+            )
+            resposta = analisador(prompt, max_new_tokens=500, truncation=True, do_sample=True, temperature=0.7)[0]['generated_text']
+            print("\n--- Análise Automática ---\n", resposta)
+        except Exception as e:
+            print(f"\n--- Erro na Análise com IA: {e} ---")
 
-        
+        # Análise manual (fallback)
+        print("\n--- Análise Manual ---")
+        above_25 = df[df['imc_medio'] > 25][['nacionalidade', 'imc_medio']]
+        below_25 = df[df['imc_medio'] <= 25][['nacionalidade', 'imc_medio']]
+        max_patients = df.loc[df['total_pacientes'].idxmax()]
 
+        print("1. Países com IMC médio acima de 25:")
+        print("\n".join(f"   - {row['nacionalidade']}: {row['imc_medio']:.2f}" for _, row in above_25.iterrows()) or "   Nenhum país.")
+
+        print("2. Países com IMC médio abaixo ou igual a 25:")
+        print("\n".join(f"   - {row['nacionalidade']}: {row['imc_medio']:.2f}" for _, row in below_25.iterrows()) or "   Nenhum país.")
+
+        print(f"3. País com maior número de pacientes: {max_patients['nacionalidade']} ({max_patients['total_pacientes']} pacientes)")
+
+    except Exception as e:
+        print(f"Erro: {e}")
     finally:
-        if 'cursor' in locals():
+        if cursor:
             cursor.close()
-        if 'conn' in locals():
+        if conn:
             conn.close()
-
+            
 if __name__ == "__main__":
     while True:
         modo = input("\n[1] Calcular ICM de paciente\n[2] Contagem de paises\n[3] analise do banco de dados por LLM \n Escolha: ")
