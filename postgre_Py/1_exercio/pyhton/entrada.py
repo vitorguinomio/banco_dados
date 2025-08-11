@@ -15,7 +15,7 @@ def conector_banco():
     return psycopg2.connect(
         host="localhost",
         database="peso",
-        user="vitor",
+        user="postgres",
         password="133122"
     )
 

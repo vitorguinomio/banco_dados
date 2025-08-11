@@ -1,6 +1,13 @@
 import psycopg2
 from datetime import datetime
+from transformers import pipeline
+import pandas as pd
 
+'''def AI():
+    prompt = f""" Analise os seguintes de IMC médio por país. Explique por que alguns países podem ter IMC mais altos. Considerer fatos da vida real
+    {}
+    """
+'''
 def calcular_idade(nasc):
     if nasc is None:
         return None
@@ -14,7 +21,7 @@ def conector_banco():
     return psycopg2.connect(
         host="localhost",
         database="peso",
-        user="vitor",
+        user="postgres",
         password="133122"
     )
 
@@ -86,13 +93,36 @@ def paciente_pais():
         if 'conn' in locals():
             conn.close()
 
+def analise_AI():
+
+    try:
+
+        conn = conector_banco()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT nacionalidade, AVG(peso / (altura * altura)) AS imc_medio, COUNT(*) AS total_pacientes FROM paciente GROUP BY nacionalidade;")
+        
+        resultados = cursor.fetchall()
+        colunas = ['nacionalidade', 'imc_medio', 'total_pacientes']
+        df = pd.DataFrame(resultados, columns = colunas)
+
+        
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conn' in locals():
+            conn.close()
+
 if __name__ == "__main__":
     while True:
-        modo = input("\n[1] Calcular ICM de paciente\n[2] Contagem de paises\nEscolha: ")
+        modo = input("\n[1] Calcular ICM de paciente\n[2] Contagem de paises\n[3] analise do banco de dados por LLM \n Escolha: ")
         if modo == "1":
             paciente_imc()
         elif modo == "2":
             paciente_pais()
+        elif modo == "3":
+            analise_AI()
         else:
             print("Opcao invalida")
         
