@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+
+    build: .
+    
+    environment:
+      - POSTGRES_USER=vitor
+      - POSTGRES_PASSWORD=133122
+      - POSTGRES_DB=peso
+      - POSTGRES_HOST=db
+
+    depends_on:
+      - db
+    command: python3 entrada.py
+
+  db:
+
+    image: postgres:15-alpine
+
+    environment:
+      - POSTGRES_USER=vitor
+      - POSTGRES_PASSWORD=133122
+      - POSTGRES_DB=peso
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
